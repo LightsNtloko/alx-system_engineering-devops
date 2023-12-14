@@ -1,2 +1,2 @@
 #!/bin/bash
-echo $((bestchol#WATER + bestchol#STIR))
+echo $((bestchol#WATER + bestchol#STIR)) | bc | tr -d '\n'
