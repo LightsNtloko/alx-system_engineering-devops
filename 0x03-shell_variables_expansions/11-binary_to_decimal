@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Get the binary number from environmental variable
+binary=$BINARY
+# Initialize the decimal variable
+decimal=0
+# Calculate the decimal equivalent
+for ((i=${#binary}-1; i>=0; i--)); do
+	digit=${binary:i:1}
+	decimal=$((decimal + digit * 2 ** ($(#binary)-1-i)))
+done
+# Display the decimal equivalent
+echo $decimal
