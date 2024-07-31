@@ -71,7 +71,7 @@ def main():
           f"{done_tasks}/{total_tasks}):")
     for todo in todos:
         if todo['completed']:
-            print(f"     {todo['title']}")
+            print(f"\t {todo['title']}")
 
 
 if __name__ == "__main__":
