@@ -55,7 +55,8 @@ def main():
     # Placeholder, replace with actual name if available
     employee_name = f"Employee {employee_id}"
 
-    print(f"Employee {employee_name} is done with tasks({done_tasks}/{total_tasks}):")
+    print(f"Employee {employee_name} is done with tasks("
+          f"{done_tasks}/{total_tasks}):")
     for todo in todos:
         if todo['completed']:
             print(f"     {todo['title']}")
