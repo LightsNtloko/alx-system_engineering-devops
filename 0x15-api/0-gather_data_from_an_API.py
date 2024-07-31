@@ -3,8 +3,9 @@
 0-gather_data_from_an_API.py
 
 This script fetches and displays the TODO list progress for a given employee ID
-using a REST API. It displays the employee's name, the number of completed tasks,
-and the total number of tasks. It also lists the titles of the completed tasks.
+using a REST API. It displays the employee's name, the number of completed
+tasks, and the total number of tasks. It also lists the titles of the completed
+tasks.
 
 Usage:
     ./0-gather_data_from_an_API.py <employee_id>
@@ -54,7 +55,8 @@ def main():
     # Placeholder, replace with actual name if available
     employee_name = f"Employee {employee_id}"
 
-    print(f"Employee {employee_name} is done with tasks({done_tasks}/{total_tasks}):")
+    print(f"Employee {employee_name} is done with tasks({done_tasks}/
+            {total_tasks}):")
     for todo in todos:
         if todo['completed']:
             print(f"     {todo['title']}")
