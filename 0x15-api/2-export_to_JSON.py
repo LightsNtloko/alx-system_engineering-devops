@@ -4,7 +4,8 @@
 
 This script exports all tasks owned by a specified employee to a JSON file.
 The file is named after the user ID and contains the following format:
-{ "USER_ID": [{"task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS, "username": "USERNAME"}, ... ]}
+{ "USER_ID": [{"task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS,
+"username": "USERNAME"}, ... ]}
 
 Usage:
     python3 2-export_to_JSON.py <employee_id>
