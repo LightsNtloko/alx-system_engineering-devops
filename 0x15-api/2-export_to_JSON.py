@@ -3,9 +3,8 @@
 2-export_to_JSON.py
 
 This script exports all tasks owned by a specified employee to a JSON file.
-The file is named after the user ID and contains the following format:
-{ "USER_ID": [{"task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS,
-"username": "USERNAME"}, ... ]}
+The file is named after the user ID and contains the following columns:
+USER_ID, USERNAME, TASK_COMPLETED_STATUS, TASK_TITLE.
 
 Usage:
     python3 2-export_to_JSON.py <employee_id>
@@ -22,49 +21,37 @@ import requests
 import sys
 
 
-def get_employee_name(employee_id):
+def get_todo_list_progress(employee_id):
     """
-    Fetches the employee's name for a given employee ID from the API.
-    """
-    url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    response = requests.get(url)
-    user = response.json()
-    return user.get('name')
-
-
-def get_todo_list(employee_id):
-    """
-    Fetches the TODO list for a given employee ID from the API.
+    Fetches and exports tasks for a given employee ID to a JSON file.
     """
     url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
     response = requests.get(url)
-    return response.json()
+    todos = response.json()
 
+    # Fetch the username
+    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    user_response = requests.get(user_url)
+    user = user_response.json()
+    username = user.get('name')
 
-def export_to_json(employee_id):
-    """
-    Exports the tasks of the given employee to a JSON file.
-    """
-    employee_name = get_employee_name(employee_id)
-    todos = get_todo_list(employee_id)
-
-    tasks = [
-        {
-            "task": todo["title"],
-            "completed": todo["completed"],
-            "username": employee_name
+    # Prepare data for JSON export
+    data = {str(employee_id): []}
+    for task in todos:
+        task_entry = {
+            "task": task["title"],
+            "completed": task["completed"],
+            "username": username
         }
-        for todo in todos
-    ]
+        data[str(employee_id)].append(task_entry)
 
-    data = {str(employee_id): tasks}
-
+    # Export data to JSON file
     filename = f"{employee_id}.json"
     with open(filename, 'w') as jsonfile:
         json.dump(data, jsonfile, indent=4)
 
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) != 2:
         print("Usage: python3 2-export_to_JSON.py <employee_id>")
         sys.exit(1)
@@ -75,4 +62,8 @@ if __name__ == "__main__":
         print("Invalid employee ID")
         sys.exit(1)
 
-    export_to_json(employee_id)
+    get_todo_list_progress(employee_id)
+
+
+if __name__ == "__main__":
+    main()
