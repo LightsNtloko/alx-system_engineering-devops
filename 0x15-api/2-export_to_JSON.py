@@ -5,6 +5,7 @@
 This script exports all tasks owned by a specified employee to a JSON file.
 The file is named after the user ID and contains the following format:
 { "USER_ID": [{"task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS, "username": "USERNAME"}, ... ]}
+
 Usage:
     python3 2-export_to_JSON.py <employee_id>
 
@@ -19,6 +20,7 @@ import json
 import requests
 import sys
 
+
 def get_employee_name(employee_id):
     """
     Fetches the employee's name for a given employee ID from the API.
@@ -28,6 +30,7 @@ def get_employee_name(employee_id):
     user = response.json()
     return user.get('name')
 
+
 def get_todo_list(employee_id):
     """
     Fetches the TODO list for a given employee ID from the API.
@@ -35,6 +38,7 @@ def get_todo_list(employee_id):
     url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
     response = requests.get(url)
     return response.json()
+
 
 def export_to_json(employee_id):
     """
@@ -58,11 +62,12 @@ def export_to_json(employee_id):
     with open(filename, 'w') as jsonfile:
         json.dump(data, jsonfile, indent=4)
 
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python3 2-export_to_JSON.py <employee_id>")
         sys.exit(1)
-    
+
     try:
         employee_id = int(sys.argv[1])
     except ValueError:
