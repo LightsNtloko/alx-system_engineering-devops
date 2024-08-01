@@ -21,49 +21,43 @@ import requests
 import sys
 
 
-def get_todo_list_progress(employee_id):
-    """
-    Fetches and exports tasks for a given employee ID to a JSON file.
-    """
-    url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
-    response = requests.get(url)
-    todos = response.json()
-
-    # Fetch the username
-    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    user_response = requests.get(user_url)
-    user = user_response.json()
-    username = user.get('name')
-
-    # Prepare data for JSON export
-    data = {str(employee_id): []}
-    for task in todos:
-        task_entry = {
-            "task": task["title"],
-            "completed": task["completed"],
-            "username": username
-        }
-        data[str(employee_id)].append(task_entry)
-
-    # Export data to JSON file
-    filename = f"{employee_id}.json"
-    with open(filename, 'w') as jsonfile:
-        json.dump(data, jsonfile, indent=4)
-
-
-def main():
-    if len(sys.argv) != 2:
-        print("Usage: python3 2-export_to_JSON.py <employee_id>")
-        sys.exit(1)
-
-    try:
-        employee_id = int(sys.argv[1])
-    except ValueError:
-        print("Invalid employee ID")
-        sys.exit(1)
-
-    get_todo_list_progress(employee_id)
-
-
 if __name__ == "__main__":
-    main()
+    url = "https://jsonplaceholder.typicode.com/"
+
+    if len(sys.argv) != 2:
+        print("Usage: ./2-export_to_JSON.py <employee_id>")
+        sys.exit(1)
+
+
+    user_id = sys.argv[1]
+
+
+    user_response = requests.get(url + "users/{}".format(user_id))
+    if user_response.status_code != 200:
+        print("Error fetching user data")
+        sys.exit(1)
+    user = user_response.json()
+
+    username = user.get("username")
+
+    todos_response = requests.get(url + "todos", params={"userId": user_id})
+    if todos_response.status_code != 200:
+        print("Error fetching TODO data")
+        sys.exit(1)
+    todos = todos_response.json()
+
+    tasks = []
+    for todo in todos:
+        tasks.append({
+            "task": todo.get("title"),
+            "completed": todo.get("completed"),
+            "username": username
+        })
+
+    data = {user_id: tasks}
+
+    json_filename = "{}.json".format(user_id)
+    with open(json_filename, "w") as jsonfile:
+        json.dump(data, jsonfile)
+
+    print("Data successfully written to", json_filename)
