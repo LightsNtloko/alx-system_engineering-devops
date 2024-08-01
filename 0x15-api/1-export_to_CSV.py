@@ -3,8 +3,8 @@
 1-export_to_CSV.py
 
 This script fetches and exports the TODO list progress for a given employee ID
-using a REST API. It exports the employee's tasks to a CSV file and validates
-the number of tasks in the CSV file.
+using a REST API. It exports the employee's tasks to a CSV file and validates the
+number of tasks in the CSV file.
 
 Usage:
     ./1-export_to_CSV.py <employee_id>
