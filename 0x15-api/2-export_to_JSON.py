@@ -28,9 +28,7 @@ if __name__ == "__main__":
         print("Usage: ./2-export_to_JSON.py <employee_id>")
         sys.exit(1)
 
-
     user_id = sys.argv[1]
-
 
     user_response = requests.get(url + "users/{}".format(user_id))
     if user_response.status_code != 200:
